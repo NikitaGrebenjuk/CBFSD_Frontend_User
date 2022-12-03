@@ -1,0 +1,38 @@
+
+<div class="container-fluid mt-2">
+    <div class="row w-100 m-0" *ngIf="fetching">
+      <div class="col-12 d-flex justify-content-center align-items-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div class="row w-100 m-0 mt-2" *ngIf="!fetching">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let product of products">
+        <div class="card shadow-sm" style="height: 100%;">
+          <img [src]="product['image']" alt="" class="card-img-top img mt-2">
+          <div class="card-body">
+            <h5 class="m-0 font-weight-bold card-title">
+              {{ product["title"] }}
+            </h5>
+            <p class="card-text text-limit">
+              {{ product["description"] }}
+            </p>
+          </div>
+          <div class="card-footer bg-white border-0">
+            <div class="d-flex justify-content-evenly align-items-center">
+              <button type="button" class="btn btn-sm btn-dark mr-2">
+                Buy Now
+              </button>
+              <button type="button" class="btn btn-sm btn-dark mr-2" (click)="addProductToShoppingCart(product)">
+                Add to Cart
+              </button>
+              <button type="button" class="btn btn-sm btn-dark" (click)="addProductToWhishlist(product)">
+                Add to Whishlist
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
