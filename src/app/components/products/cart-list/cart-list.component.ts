@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { raceWith } from 'rxjs';
 import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
@@ -7,16 +8,22 @@ import { ProductsService } from 'src/app/services/products.service';
   templateUrl: './cart-list.component.html',
   styleUrls: ['./cart-list.component.css']
 })
-export class CartListComponent implements OnInit {
+export class CartListComponent implements OnInit ,  AfterViewInit{
 
   public totalItems:number=0;
   public totalPrice:number=0;
 
   constructor(public productsService: ProductsService,private router: Router) { }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.calculate();
   }
+
+  ngOnInit(): void {
+    this.productsService.getCartList();
+    
+  }
+
 
   addPrdToWishlist(prd:any, removeBool:boolean, prdIdx:number){
     this.productsService.addProductToWhishlist(prd, removeBool, prdIdx);
@@ -24,9 +31,12 @@ export class CartListComponent implements OnInit {
     this.calculate();
   }
 
-  removeProductFromCart(prdIdx:number){ 
-    let elements = this.productsService.cartProducts.splice(prdIdx, 1);
-    console.log(elements[0]['title'], "Product Removed from Cart");
+  removeProductFromCart(cartId:number){ 
+    // let elements = this.productsService.cartProducts.splice(prdIdx, 1);
+    // console.log(elements[0]['title'], "Product Removed from Cart");
+    this.productsService.deleteCartItem(cartId).subscribe(response=>{
+      this.productsService.getCartList();
+    })
     this.calculate();
   }
 
@@ -35,7 +45,9 @@ export class CartListComponent implements OnInit {
   }
 
   calculate() {
+    console.log(this.productsService.cartProducts);
+    if(this.productsService.cartProducts)
     this.totalItems = this.productsService.cartProducts.reduce((prev,next)=> prev+next['quantity'],0);
-    this.totalPrice = this.productsService.cartProducts.reduce((prev,next)=> prev+ (next['quantity']*next['price']),0);
+    this.totalPrice = this.productsService.cartProducts.reduce((prev,next)=> prev+ (next['quantity']*next.products['price']),0);
   }
 }

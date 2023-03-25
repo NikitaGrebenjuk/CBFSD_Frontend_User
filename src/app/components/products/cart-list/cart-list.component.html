@@ -15,33 +15,34 @@
         </div>
       </div>
       <div *ngIf="productsService.cartProducts.length !== 0">
-        <div class="card shadow-sm mb-2" *ngFor="let product of productsService.cartProducts; index as idx">
+        <div class="card shadow-sm mb-2" *ngFor="let cart of productsService.cartProducts; index as idx">
           <div class="card-body">
             <div class="row w-100 m-0">
               <div class="col-12 col-sm-2 d-flex justify-content-center align-items-center">
-                <img [src]="product['image']" [alt]="product['title']" class="img-fluid" width="128px" height="128px">
+                <!-- <img [src]="product['image']" [alt]="product['title']" class="img-fluid" width="128px" height="128px"> -->
               </div>
               <div class="col-12 col-sm-10 mt-2 mt-sm-0">
                 <div class="d-flex flex-column">
-                  <h5 class="m-0 font-weight-bold card-title mb-1">
-                    {{ product["title"] }}
-                  </h5>
-                  <p class="card-text text-limit m-0 mb-1">
-                    {{ product["description"] }}
+                  <h6 class="m-0 font-weight-bold card-title">
+                    <b>{{ cart.products.productTitle }}</b>
+                  </h6>
+                  <p class="card-text text-limit mt-2">
+                    {{ cart.products.productDescription }}
                   </p>
+  
                   <p class="card-text m-0 mb-1">
                     <span class="text-muted mr-2">Qty. :</span> 
-                    <span class="font-weight-bold mr-2">{{ product["quantity"] }}</span>
+                    <span class="font-weight-bold mr-2">{{ cart.quantity }}</span>
                   </p>
                   <p class="card-text m-0 mb-3">
                     <span class="text-muted mr-2">Price:</span>
-                    <span class="font-weight-bold">{{ product["price"] | currency:'INR':'symbol' }}</span>
+                    <span class="font-weight-bold">{{ cart.products.price | currency:'USD':'symbol' }}</span>
                   </p>
                 </div>
   
                 <div class="d-flex align-items-center">
-                  <button type="button" class="btn btn-sm btn-dark me-2" (click)="addPrdToWishlist(product, true, idx)" >Add to Whishlist</button>
-                  <button type="button" class="btn btn-sm btn-danger" (click)="removeProductFromCart(idx)">Remove</button>
+                  <button type="button" class="btn btn-sm btn-dark me-2" (click)="addPrdToWishlist(cart, true, idx)" >Add to Whishlist</button>
+                  <button type="button" class="btn btn-sm btn-danger" (click)="removeProductFromCart(cart.cartId)">Remove</button>
                 </div>
               </div>
             </div>

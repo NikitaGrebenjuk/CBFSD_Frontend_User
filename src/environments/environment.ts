@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://fakestoreapi.com'
+  apiUrl: 'https://fakestoreapi.com',
+  baseUrl: 'http://localhost:9070/estore-zone-service/api/v1'
 };
 
 /*
