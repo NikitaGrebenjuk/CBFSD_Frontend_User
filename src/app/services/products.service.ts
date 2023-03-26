@@ -21,8 +21,6 @@ export class ProductsService {
   // Fetch data from rest apis
   public getProducts() {
     this.httpClient.get(`${environment.baseUrl}/products`).subscribe( (response:any)=>{
-      console.log(response);
-      
       this.productsSub.next(Object.assign([],response.content));
       this.productsRetreived = true;
     })
@@ -48,35 +46,55 @@ export class ProductsService {
       quantity : 1
     }
     this.httpClient.post(`${environment.baseUrl}/carts`, cart).subscribe( (response:any)=>{ 
-      console.log(prd['title'], "Product Added to Shoping Cart", response);
+      // console.log(prd['title'], "Product Added to Shoping Cart", response);
     })
     
-    this.getCartList();
+    this.getCartList().subscribe( (response:any)=>{ 
+      this.cartProducts = response.content;
+    });
   }
 
   // add products to whish 
   addProductToWhishlist(prd:any, prdRemoveBool?:boolean, prdIdx:number=-1) {
-    if(!this.whishlistProducts.some(x=>x["productId"]===prd["productId"])) {
-      this.whishlistProducts.push({
-        ...prd, "quantity":1
-      });
-      console.log(prd['title'], "Product Added to Whishlist");
-    } else {
-      console.log(prd['title'], "Already Added to Whishlist");
+    // if(!this.whishlistProducts.some(x=>x["productId"]===prd["productId"])) {
+    //   this.whishlistProducts.push({
+    //     ...prd, "quantity":1
+    //   });
+    //   console.log(prd['title'], "Product Added to Whishlist");
+    // } else {
+    //   console.log(prd['title'], "Already Added to Whishlist");
+    // }
+    // if(prdRemoveBool) {
+    //   this.products.splice(prdIdx, 1);
+    // }
+
+    let whishlist = {
+      userId: this.authService.getUser().userId,
+      productId: prd["productId"],
     }
-    if(prdRemoveBool) {
-      this.products.splice(prdIdx, 1);
-    }
+    this.httpClient.post(`${environment.baseUrl}/whishlist`, whishlist).subscribe( (response:any)=>{ 
+      // console.log(prd['title'], "Product Added to whishlist", response);
+    })
+    
+    this.getWhishlist().subscribe( (response:any)=>{ 
+      this.whishlistProducts = response.content;
+    });
+
   }
 
   getCartList() {
-    this.httpClient.get(`${environment.baseUrl}/carts?userId=${this.authService.getUser().userId}`).subscribe( (response:any)=>{ 
-      this.cartProducts = response.content;
-    })
+    return this.httpClient.get(`${environment.baseUrl}/carts?userId=${this.authService.getUser().userId}`);
   }
 
+  getWhishlist() {
+    return this.httpClient.get(`${environment.baseUrl}/whishlist?userId=${this.authService.getUser().userId}`);
+  }
 
   deleteCartItem(cartId:any) {
-    return this.httpClient.delete<any[]>(`${environment.baseUrl}/orders/${cartId}`);
+    return this.httpClient.delete<any[]>(`${environment.baseUrl}/carts/${cartId}`);
+  }
+
+  deleteWhishlistItem(whislistId:any) {
+    return this.httpClient.delete<any[]>(`${environment.baseUrl}/whishlist/${whislistId}`);
   }
 }

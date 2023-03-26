@@ -6,20 +6,20 @@
                 <h5 class="mb-0">My profile</h5>
               </div>
               <div class="card-body">
-                <form>
+                <form [formGroup]="profileForm" >
                   <h6 class="heading-small text-muted mb-2">User information</h6>
                   <div>
                     <div class="row">
                       <div class="col-lg-6">
                         <div class="form-group">
-                          <label class="form-control-label" for="input-username">Username</label>
-                          <input type="text" id="input-username" class="form-control form-control-alternative" placeholder="Username" value="jones.jessica">
+                          <label class="form-control-label"   for="input-username">Username</label>
+                          <input type="text" id="input-username" formControlName="fullName" class="form-control form-control-alternative" placeholder="Username" >
                         </div>
                       </div>
                       <div class="col-lg-6">
                         <div class="form-group">
-                          <label class="form-control-label" for="input-email">Email address</label>
-                          <input type="email" id="input-email" class="form-control form-control-alternative" placeholder="jessica@example.com">
+                          <label class="form-control-label"   for="input-email">Email address</label>
+                          <input type="email" id="input-email" formControlName="email" class="form-control form-control-alternative" placeholder="jessica@example.com">
                         </div>
                       </div>
                     </div>
@@ -27,13 +27,13 @@
                       <div class="col-lg-6">
                         <div class="form-group">
                           <label class="form-control-label" for="input-first-name">First name</label>
-                          <input type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="First name" value="Jessica">
+                          <input type="text" id="input-first-name"  formControlName = "fullName"  class="form-control form-control-alternative" placeholder="First name" >
                         </div>
                       </div>
                       <div class="col-lg-6">
                         <div class="form-group">
-                          <label class="form-control-label" for="input-last-name">Last name</label>
-                          <input type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="Last name" value="Jone">
+                          <label class="form-control-label"  for="input-last-name">Last name</label>
+                          <input type="text" id="input-last-name" formControlName = "fullName" class="form-control form-control-alternative" placeholder="Last name" value="Jone">
                         </div>
                       </div>
                     </div>
@@ -53,20 +53,20 @@
                     <div class="row">
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label class="form-control-label" for="input-city">City</label>
-                          <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="City" value="New York">
+                          <label class="form-control-label"  for="input-city">City</label>
+                          <input type="text" id="input-city" formControlName = "city" class="form-control form-control-alternative" placeholder="City" >
                         </div>
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
                           <label class="form-control-label" for="input-country">Country</label>
-                          <input type="text" id="input-country" class="form-control form-control-alternative" placeholder="Country" value="United States">
+                          <input type="text" id="input-country" formControlName = "country" class="form-control form-control-alternative" placeholder="Country" value="United States">
                         </div>
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
                           <label class="form-control-label" for="input-country">Postal code</label>
-                          <input type="number" id="input-postal-code" class="form-control form-control-alternative" placeholder="Postal code">
+                          <input type="number" id="input-postal-code" formControlName = "pincode" class="form-control form-control-alternative" placeholder="Postal code">
                         </div>
                       </div>
                     </div>
@@ -93,10 +93,10 @@
               <div class="card-body">
                 <div class="text-center mt-2">
                   <h3>
-                    Jessica Jones<span class="font-weight-light">, 27</span>
+                    {{user.fullName}}<span class="font-weight-light">, 27</span>
                   </h3>
                   <div class="h5 font-weight-300">
-                    <i class="ni location_pin mr-2"></i>Bucharest, Romania
+                    <i class="ni location_pin mr-2"></i>{{user.city}}, {{user.state}}
                   </div>
                 </div>
               </div>

@@ -8,26 +8,28 @@ import { ProductsService } from 'src/app/services/products.service';
   templateUrl: './cart-list.component.html',
   styleUrls: ['./cart-list.component.css']
 })
-export class CartListComponent implements OnInit ,  AfterViewInit{
+export class CartListComponent implements OnInit {
 
   public totalItems:number=0;
   public totalPrice:number=0;
 
   constructor(public productsService: ProductsService,private router: Router) { }
 
-  ngAfterViewInit(): void {
-    this.calculate();
-  }
-
   ngOnInit(): void {
-    this.productsService.getCartList();
-    
+    this.getCartList();
+  }
+
+  getCartList() {
+    this.productsService.getCartList().subscribe( (response:any)=>{ 
+      this.productsService.cartProducts = response.content;
+      this.calculate();
+    });
   }
 
 
-  addPrdToWishlist(prd:any, removeBool:boolean, prdIdx:number){
-    this.productsService.addProductToWhishlist(prd, removeBool, prdIdx);
-    this.removeProductFromCart(prdIdx);
+  addPrdToWishlist(cart:any, removeBool:boolean, prdIdx:number){
+    this.productsService.addProductToWhishlist(cart, removeBool, prdIdx);
+    this.removeProductFromCart(cart.cartId);
     this.calculate();
   }
 
@@ -35,7 +37,7 @@ export class CartListComponent implements OnInit ,  AfterViewInit{
     // let elements = this.productsService.cartProducts.splice(prdIdx, 1);
     // console.log(elements[0]['title'], "Product Removed from Cart");
     this.productsService.deleteCartItem(cartId).subscribe(response=>{
-      this.productsService.getCartList();
+      this.getCartList();
     })
     this.calculate();
   }
