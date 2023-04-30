@@ -31,7 +31,12 @@ pipeline {
             steps {
                 echo '----------------- This is a docker deploment phase ----------'
                 sh '''
-                
+                 (if  [ $(docker ps -a | grep cbfsd-user-webapp-container-03-12-2022 | cut -d " " -f1) ]; then \
+                        echo $(docker rm -f cbfsd-user-webapp-container-03-12-2022); \
+                        echo "---------------- successfully removed cbfsd-user-webapp-container-03-12-2022 ----------------"
+                     else \
+                    echo OK; \
+                 fi;);
                 docker container run --restart always --name cbfsd-user-webapp-container-03-12-2022 -p 4201:80 -d cbfsd-user-webapp-03-12-2022
             '''
             }
